@@ -54,3 +54,12 @@ async function includesBooking(userId: number){
   
     
 }
+
+const bookingsService = {
+    createBookingReserve,
+    roomIsAvaliable,
+    includesBooking
+
+};
+
+export default bookingsService;
