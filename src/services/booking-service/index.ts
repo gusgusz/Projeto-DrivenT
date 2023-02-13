@@ -16,7 +16,7 @@ async function getBookingByUserId(id: number): Promise<RoomUser> {
 }
 
 async function postBooking(roomId: number, userId: number) {
-  if (!roomId) throw new Error("Body param roomId is missing");
+  if (!roomId) throw unauthorizedError;
 
   const ticket = await ticketRepository.findTicketByUserId(userId);
   const isRemoteTicket = ticket.TicketType.isRemote;
@@ -37,7 +37,7 @@ async function postBooking(roomId: number, userId: number) {
 }
 
 async function updateBooking(roomId: number, bookingId: number, userId: number) {
-  if (!roomId) throw new Error("Body param roomId is missing");
+  if (!roomId) throw unauthorizedError;
 
   const haveBooking = await bookingRepository.getBookingById(userId);
   if (!haveBooking) throw forbidden();
