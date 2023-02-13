@@ -31,9 +31,7 @@ export async function createBookingReserve(req: AuthenticatedRequest, res: Respo
     if (error.name === "NotFoundError") {
       return res.sendStatus(httpStatus.NOT_FOUND);
     }
-    if (error.name === "NoVacanciesAvailableError") {
-      return res.sendStatus(httpStatus.FORBIDDEN);
-    }
+  
     return res.sendStatus(httpStatus.FORBIDDEN);
   }
 }
@@ -52,9 +50,7 @@ const bookingId = Number(req.params.bookingId);
     if (error.name === "UnauthorizedError") {
       return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
-    if (error.name === "NoVacanciesAvailableError") {
-      return res.sendStatus(httpStatus.FORBIDDEN);
-    }
+  
     return res.sendStatus(httpStatus.FORBIDDEN);
   }
 }
