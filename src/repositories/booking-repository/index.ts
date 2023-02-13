@@ -1,64 +1,53 @@
 import { prisma } from "@/config";
-import { Room } from "@prisma/client";
-import dayjs from "dayjs";
 
-async function createBooking(userId: number, roomId: number, ) {
-    const now : string = dayjs().toISOString();
-    
-    const booking = await prisma.booking.create({
-        data: {
-            userId,
-            roomId,
-            updatedAt: now,
-        }
-    });
-    return booking;
+async function getBookingById(id: number) {
+  return prisma.booking.findFirst({
+    where: {
+      userId: id,
+    },
+    select: {
+      id: true,
+      Room: true,
+    },
+  });
 }
 
-async function getRoomById(id: number) {
-    const room = await prisma.room.findUnique({
-        where: {
-            id: id
-        }
-    });
-    return room;
+async function createBooking(roomId: number, userId: number) {
+  return prisma.booking.create({
+    data: {
+      roomId,
+      userId,
+    },
+  });
 }
 
-async function getBookingsByRoomId(id : number){
-    const booking = prisma.booking.findMany({
-        where: {
-            id: id,
-        }
-    });
-
-    return booking;
+async function updateBooking(bookingId: number, roomId: number) {
+  return prisma.booking.update({
+    where: {
+      id: bookingId,
+    },
+    data: {
+      roomId: roomId,
+    },
+  });
 }
 
-async function getUserById(id: number){
-    const user = await prisma.user.findFirst({
-        where: {
-            id: id,
-        },
-    });
-    return user;
-}
-
-async function getBookingByUserId(id: number){
-    const booking = await prisma.booking.findFirst({
-        where: {
-            id: id,
-        }
-    });
-    return booking
-
+async function getRoom(id: number) {
+  return prisma.room.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      Booking: true,
+    },
+  });
 }
 
 const bookingRepository = {
-    getRoomById,
-    getBookingsByRoomId,
-    getUserById,
-    getBookingByUserId,
-    createBooking
+  getBookingById,
+  createBooking,
+  updateBooking,
+  getRoom,
 };
 
 export default bookingRepository;
