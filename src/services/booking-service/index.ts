@@ -20,7 +20,7 @@ async function postBooking(roomId: number, userId: number) {
   if (!roomId) throw unauthorizedError;
 
   const ticket = await ticketRepository.findTicketByUserId(userId);
-  c
+  
 
   if (ticket.TicketType.isRemote || ticket.status !== "PAID"|| !ticket.TicketType.includesHotel) throw FORBIDDEN;
 
