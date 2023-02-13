@@ -2,6 +2,7 @@ import { Room } from "@prisma/client";
 import { notFoundError, unauthorizedError , forbidden} from "@/errors";
 import ticketRepository from "@/repositories/ticket-repository";
 import bookingRepository from "@/repositories/booking-repository";
+import { FORBIDDEN } from "http-status";
 
 interface RoomUser {
   id: number;
@@ -19,11 +20,9 @@ async function postBooking(roomId: number, userId: number) {
   if (!roomId) throw unauthorizedError;
 
   const ticket = await ticketRepository.findTicketByUserId(userId);
-  const isRemoteTicket = ticket.TicketType.isRemote;
-  const notPaidTicket = ticket.status === "RESERVED";
-  const notIncludesHotel = !ticket.TicketType.includesHotel;
+  c
 
-  if (isRemoteTicket || notPaidTicket || notIncludesHotel) throw new Error();
+  if (ticket.TicketType.isRemote || ticket.status !== "PAID"|| !ticket.TicketType.includesHotel) throw FORBIDDEN;
 
   const room = await bookingRepository.getRoom(roomId);
   if (!room) throw notFoundError();
