@@ -5,6 +5,7 @@ module.exports = {
   transform: {
     '.+\\.ts$': 'ts-jest',
   },
+  
   testMatch: ['<rootDir>/tests/**/*.(test|spec).ts'],
   setupFiles: ['<rootDir>/tests/setup-envs.ts'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup-files-after-env.ts'],
