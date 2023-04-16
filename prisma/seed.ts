@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 const prisma = new PrismaClient();
 
 async function main() {
+  
   let event = await prisma.event.findFirst();
   if (!event) {
     event = await prisma.event.create({
@@ -14,38 +15,37 @@ async function main() {
         endsAt: dayjs().add(21, "days").toDate(),
       },
     });
-  }
-  let ticketType = await prisma.ticketType.findMany();
-  if(!ticketType){
- await prisma.ticketType.createMany({
-    data: [
-      {  
-        name:  "Presencial sem hotel",
-        price: 250,
-        isRemote: false,
-        includesHotel: false,
-        createdAt: dayjs().toDate(),
-        updatedAt:     dayjs().toDate()},
+
+    await prisma.ticketType.createMany({
+      data: [
         {  
-          name:  "Presencial com Hotel",
+          name:  "Presencial sem hotel",
           price: 250,
           isRemote: false,
-          includesHotel: true,
+          includesHotel: false,
           createdAt: dayjs().toDate(),
           updatedAt:     dayjs().toDate()},
           {  
-            name:  "Online",
-            price: 100,
-            isRemote: true,
-            includesHotel: false,
+            name:  "Presencial com Hotel",
+            price: 250,
+            isRemote: false,
+            includesHotel: true,
             createdAt: dayjs().toDate(),
-            updatedAt:     dayjs().toDate()}
-    ],
-  })
-}
+            updatedAt:     dayjs().toDate()},
+            {  
+              name:  "Online",
+              price: 100,
+              isRemote: true,
+              includesHotel: false,
+              createdAt: dayjs().toDate(),
+              updatedAt:     dayjs().toDate()}
+      ],
+    });
+  }
+  
 
   console.log({ event });
-  console.log(ticketType);
+
  
 }
 
