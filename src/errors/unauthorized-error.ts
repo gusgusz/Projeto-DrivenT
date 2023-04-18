@@ -1,8 +1,8 @@
 import { ApplicationError } from '@/protocols';
 
-export function unauthorizedError(): ApplicationError {
+export function unauthorizedError(message?: string): ApplicationError {
   return {
     name: 'UnauthorizedError',
-    message: 'You must be signed in to continue',
+    message: message ? message : 'You must be signed in to continue',
   };
 }

@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
-import paymentsService from '@/services/payments-service';
+import { paymentsService } from '@/services/payments-service';
 
 export async function getPayment(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   if (!Number(req.params.ticketId)) return res.sendStatus(httpStatus.BAD_REQUEST);

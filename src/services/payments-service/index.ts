@@ -23,7 +23,8 @@ async function processPayment(ticketId: number, cardData: CardData, userId: numb
   const enrollment = await enrollmentRepository.findEnrollmentById(ticket.enrollmentId);
 
   if (enrollment.userId !== userId) {
-    throw unauthorizedError();
+    console.log(enrollment, userId);
+    throw unauthorizedError('this thicket dont belong to user');
   }
 
   const { price } = await ticketsRepository.findTicketTypeById(ticket.ticketTypeId);
