@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import faker from '@faker-js/faker';
+import { generateCPF, getStates } from '@brazilian-utils/brazilian-utils';
 import dayjs from "dayjs";
+import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
-  
+
   let event = await prisma.event.findFirst();
   if (!event) {
     event = await prisma.event.create({
@@ -41,6 +44,44 @@ async function main() {
               updatedAt:     dayjs().toDate()}
       ],
     });
+  
+    const hashedPassword = await bcrypt.hash("123456", 10);
+
+  const user =  await prisma.user.create({
+      data: {
+        email: "gus@gmail.com",
+        password: hashedPassword,
+      },
+    
+    });
+
+
+
+  return prisma.enrollment.create({
+    data: {
+      name: faker.name.findName(),
+      cpf: generateCPF(),
+      birthday: faker.date.past(),
+      phone: faker.phone.phoneNumber('(##) 9####-####'),
+      userId: await user.id,
+      Address: {
+        create: {
+          street: faker.address.streetName(),
+          cep: faker.address.zipCode(),
+          city: faker.address.city(),
+          neighborhood: faker.address.city(),
+          number: faker.datatype.number().toString(),
+          state: faker.helpers.arrayElement(getStates()).name,
+        },
+      },
+    },
+    include: {
+      Address: true,
+    },
+  });
+
+
+
   }
   
 

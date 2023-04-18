@@ -13,7 +13,7 @@ export function handleApplicationErrors(
       message: err.message,
     });
   }
-  if (err.name === 'BadRequest') {
+  if (err.name === 'BadRequest' || 'badRequest') {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
     });

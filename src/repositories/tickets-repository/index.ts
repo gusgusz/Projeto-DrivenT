@@ -7,6 +7,21 @@ async function findTicketTypes(): Promise<TicketType[]> {
   return await prisma.ticketType.findMany();
 }
 
+async function findTicketById(id: number): Promise<Ticket> {
+  return await prisma.ticket.findFirst({
+    where: { id },
+    include: {
+      TicketType: true,
+    },
+  });
+}
+
+async function findJustTicketById(id: number): Promise<Ticket> {
+  return await prisma.ticket.findFirst({
+    where: { id },
+  });
+}
+
 async function findTicketTypeById(ticketTypeId: number): Promise<TicketType> {
   return await prisma.ticketType.findFirst({
     where: {
@@ -34,11 +49,23 @@ async function createTicket(ticketTypeId: number, enrollmentId: number): Promise
   });
 }
 
+async function updateState(id: number) {
+  return await prisma.ticket.update({
+    where: { id },
+    data: {
+      status: 'PAID',
+    },
+  });
+}
+
 const ticketsRepository = {
   findTicketTypes,
   createTicket,
   findTicketTypeById,
   findTicketByEnrollmentId,
+  findTicketById,
+  findJustTicketById,
+  updateState,
 };
 
 export default ticketsRepository;

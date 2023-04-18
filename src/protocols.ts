@@ -1,4 +1,4 @@
-import { Ticket, TicketType } from '@prisma/client';
+import { Ticket, TicketType, Payment } from '@prisma/client';
 
 export type ApplicationError = {
   name: string;
@@ -33,3 +33,5 @@ export type RequestError = {
 export type TicketWithDetails = Ticket & {
   TicketType: TicketType;
 };
+
+export type CardData = Omit<Payment, 'id' & 'createdAt' & 'updatedAt' & 'ticketId'>;
