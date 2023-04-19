@@ -7,3 +7,7 @@ export const processPaymentSchema = Joi.object({
   expirationDate: Joi.date().required(),
   cvv: Joi.number().required(),
 });
+
+export const ticketId = Joi.object({
+  ticketId: Joi.number(),
+});

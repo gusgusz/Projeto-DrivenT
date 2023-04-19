@@ -63,7 +63,7 @@ async function main() {
       cpf: generateCPF(),
       birthday: faker.date.past(),
       phone: faker.phone.phoneNumber('(##) 9####-####'),
-      userId: await user.id,
+      userId:  user.id,
       Address: {
         create: {
           street: faker.address.streetName(),

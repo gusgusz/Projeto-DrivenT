@@ -16,7 +16,7 @@ async function findEnrollmentByUser(userId: number) {
 }
 
 async function findEnrollmentById(id: number) {
-  return prisma.enrollment.findFirst({
+  return prisma.enrollment.findUnique({
     where: { id },
   });
 }

@@ -24,7 +24,6 @@ export async function postTicket(req: AuthenticatedRequest, res: Response) {
     const ticketInserted = await ticketsService.postTicket(userId, ticketTypeId);
     return res.status(httpStatus.CREATED).send(ticketInserted);
   } catch (err) {
-    console.log(err);
     if (err.name === 'BadRequest') {
       return res.status(httpStatus.BAD_REQUEST).send(err);
     }
