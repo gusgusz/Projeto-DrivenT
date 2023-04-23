@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
-import hotelsService from '@/services/payments-service';
+import { hotelsService } from '@/services/hotels-service';
 import { ticketId } from '@/schemas';
 
 export async function getHotels(req: AuthenticatedRequest, res: Response) {
@@ -15,8 +15,8 @@ export async function getHotels(req: AuthenticatedRequest, res: Response) {
     }
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
-    if (error.name === 'UnauthorizedError') {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    if (error.name === 'paymentRequired') {
+      return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
     }
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
@@ -26,7 +26,7 @@ export async function getHotelById(req: AuthenticatedRequest, res: Response) {
   try {
     const { userId } = req;
 
-    const hotelId = req.params.hotelId;
+    const hotelId = Number(req.params.hotelId);
     if (!hotelId) return res.sendStatus(httpStatus.BAD_REQUEST);
 
     const hotel = await hotelsService.getHotelById(userId, hotelId);
@@ -36,8 +36,8 @@ export async function getHotelById(req: AuthenticatedRequest, res: Response) {
     }
     return res.status(httpStatus.OK).send(hotel);
   } catch (error) {
-    if (error.name === 'UnauthorizedError') {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    if (error.name === 'paymentRequired') {
+      return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
     }
     return res.sendStatus(httpStatus.NOT_FOUND);
   }

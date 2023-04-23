@@ -1,21 +1,21 @@
 import { prisma } from '@/config';
 
-async function getHotelById(id: number) {
+async function findHotelById(id: number) {
   return await prisma.hotel.findFirst({
     where: { id },
     include: {
-      rooms: true,
+      Rooms: true,
     },
   });
 }
 
-async function getHotels() {
+async function findHotels() {
   return await prisma.hotel.findMany();
 }
 
 const hotelsRepository = {
-  getHotels,
-  getHotelById,
+  findHotels,
+  findHotelById,
 };
 
 export default hotelsRepository;
