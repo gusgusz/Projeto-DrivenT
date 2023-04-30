@@ -13,6 +13,11 @@ export function handleApplicationErrors(
       message: err.message,
     });
   }
+  if (err.name === 'Forbidden') {
+    return res.status(httpStatus.FORBIDDEN).send({
+      message: err.message,
+    });
+  }
   if (err.name === 'BadRequest' || 'badRequest') {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
