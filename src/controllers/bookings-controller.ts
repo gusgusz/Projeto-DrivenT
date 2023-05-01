@@ -5,7 +5,7 @@ import { bookingService } from '@/services/bookings-service';
 
 export async function getBooking(req: AuthenticatedRequest, res: Response) {
   try {
-    const { userId } = req;
+    const userId = req.userId;
 
     const booking = await bookingService.getBooking(userId);
     if (!booking) return res.sendStatus(httpStatus.NOT_FOUND);
@@ -14,6 +14,7 @@ export async function getBooking(req: AuthenticatedRequest, res: Response) {
     if (error.name === 'Forbidden') {
       return res.sendStatus(httpStatus.FORBIDDEN);
     }
+
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
@@ -32,6 +33,9 @@ export async function postBooking(req: AuthenticatedRequest, res: Response) {
   } catch (error) {
     if (error.name === 'Forbidden') {
       return res.sendStatus(httpStatus.FORBIDDEN);
+    }
+    if (error.name === 'UnauthorizedError') {
+      return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
@@ -52,6 +56,9 @@ export async function updateBooking(req: AuthenticatedRequest, res: Response) {
   } catch (error) {
     if (error.name === 'Forbidden') {
       return res.sendStatus(httpStatus.FORBIDDEN);
+    }
+    if (error.name === 'UnauthorizedError') {
+      return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
