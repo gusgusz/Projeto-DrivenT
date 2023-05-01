@@ -22,15 +22,14 @@ export async function getBooking(req: AuthenticatedRequest, res: Response) {
 export async function postBooking(req: AuthenticatedRequest, res: Response) {
   try {
     const roomId = Number(req.body.roomId);
-    console.log(roomId);
     const { userId } = req;
 
     if (!roomId) {
       return res.sendStatus(httpStatus.BAD_REQUEST);
     }
-    await bookingService.postBooking(userId, roomId);
+    const booking = await bookingService.postBooking(userId, roomId);
 
-    return res.status(httpStatus.OK);
+    return res.status(httpStatus.OK).send({ bookingId: booking.id });
   } catch (error) {
     if (error.name === 'Forbidden') {
       return res.sendStatus(httpStatus.FORBIDDEN);

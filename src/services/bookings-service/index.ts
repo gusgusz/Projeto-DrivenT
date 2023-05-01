@@ -27,7 +27,7 @@ async function postBooking(userId: number, roomId: number) {
   }
   if (room.Booking.length >= room.capacity) throw ForbiddenError();
 
-  await bookingsRepository.postBooking(userId, roomId);
+  return await bookingsRepository.postBooking(userId, roomId);
 }
 
 async function updateBooking(userId: number, roomId: number, bookingId: number) {
