@@ -25,7 +25,7 @@ async function postBooking(userId: number, roomId: number) {
   await bookingsRepository.postBooking(userId, roomId);
 }
 
-async function updateBooking(userId: number, roomId: number) {
+async function updateBooking(userId: number, roomId: number, bookingId: number) {
   await isPossibleReserve(userId);
 
   const room = await hotelsRepository.findRoomWithBookings(roomId);
@@ -37,8 +37,8 @@ async function updateBooking(userId: number, roomId: number) {
 
   const pastRoom = await bookingsRepository.findBookingByUserId(userId);
   if (!pastRoom) throw ForbiddenError();
-  if (pastRoom.userId !== userId) throw ForbiddenError();
-  await bookingsRepository.updateBooking(pastRoom.id, roomId);
+  if (pastRoom.userId !== userId || pastRoom.id !== bookingId) throw ForbiddenError();
+  await bookingsRepository.updateBooking(bookingId, roomId);
 }
 
 async function isPossibleReserve(userId: number) {
