@@ -11,6 +11,7 @@ import {
   createPayment,
   generateCreditCardData,
   createHotelWithRooms,
+  createBooking,
 } from '../factories';
 import { cleanDb, generateValidToken } from '../helpers';
 import { prisma } from '@/config';
@@ -113,21 +114,16 @@ describe('GET /booking', () => {
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createTicketType(false, true);
       const hotel = await createHotelWithRooms();
+      await createBooking(hotel.Rooms[0].id, user.id);
 
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
 
       const response = await server.get(`/booking`).set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toEqual(httpStatus.OK);
-      expect(response.body).toEqual([
-        {
-          id: hotel.id,
-          name: hotel.name,
-          image: hotel.image,
-          createdAt: hotel.createdAt.toISOString(),
-          updatedAt: hotel.updatedAt.toISOString(),
-        },
-      ]);
+      expect(response.body).toEqual({
+        bookingId: expect.any(Number),
+      });
     });
   });
 });
@@ -392,7 +388,9 @@ describe('PUT /booking', () => {
 
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
 
-      const response = await server.put(`/booking/1`).set('Authorization', `Bearer ${token}`).send({
+      const booking = await createBooking(hotel.Rooms[0].id, user.id);
+
+      const response = await server.put(`/booking/${booking.id}`).set('Authorization', `Bearer ${token}`).send({
         roomId: hotel.Rooms[0].id,
       });
 
