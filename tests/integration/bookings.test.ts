@@ -270,7 +270,7 @@ describe('POST /booking', () => {
 
 describe('PUT /booking', () => {
   it('should respond with status 401 if no token is given', async () => {
-    const response = await server.post('/booking');
+    const response = await server.put('/booking/1');
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -278,7 +278,7 @@ describe('PUT /booking', () => {
   it('should respond with status 401 if given token is not valid', async () => {
     const token = faker.lorem.word();
 
-    const response = await server.post('/booking').set('Authorization', `Bearer ${token}`);
+    const response = await server.put('/booking/1').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -287,7 +287,7 @@ describe('PUT /booking', () => {
     const userWithoutSession = await createUser();
     const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
 
-    const response = await server.post('/booking').set('Authorization', `Bearer ${token}`);
+    const response = await server.put('/booking/1').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -297,7 +297,7 @@ describe('PUT /booking', () => {
       const user = await createUser();
       const token = await generateValidToken(user);
 
-      const response = await server.post('/booking').set('Authorization', `Bearer ${token}`);
+      const response = await server.put('/booking/1').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toEqual(httpStatus.BAD_REQUEST);
     });
@@ -306,7 +306,7 @@ describe('PUT /booking', () => {
       const token = await generateValidToken(user);
       await createEnrollmentWithAddress(user);
 
-      const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({
+      const response = await server.put('/booking/1').set('Authorization', `Bearer ${token}`).send({
         roomId: 1,
       });
 
@@ -315,7 +315,7 @@ describe('PUT /booking', () => {
     it('should respond with status 403 when user does not has a enrollment yet', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
-      const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({
+      const response = await server.put('/booking/1').set('Authorization', `Bearer ${token}`).send({
         roomId: 1,
       });
 
@@ -330,7 +330,7 @@ describe('PUT /booking', () => {
 
       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
 
-      const response = await server.post(`/booking`).set('Authorization', `Bearer ${token}`).send({
+      const response = await server.put(`/booking/1`).set('Authorization', `Bearer ${token}`).send({
         roomId: 1,
       });
 
@@ -345,7 +345,7 @@ describe('PUT /booking', () => {
 
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
 
-      const response = await server.post(`/booking`).set('Authorization', `Bearer ${token}`).send({
+      const response = await server.put(`/booking/1`).set('Authorization', `Bearer ${token}`).send({
         roomId: 1,
       });
 
@@ -360,7 +360,7 @@ describe('PUT /booking', () => {
 
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
 
-      const response = await server.post(`/booking`).set('Authorization', `Bearer ${token}`).send({
+      const response = await server.put(`/booking/1`).set('Authorization', `Bearer ${token}`).send({
         roomId: 1,
       });
 
@@ -376,7 +376,7 @@ describe('PUT /booking', () => {
 
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
 
-      const response = await server.post(`/booking`).set('Authorization', `Bearer ${token}`).send({
+      const response = await server.put(`/booking/1`).set('Authorization', `Bearer ${token}`).send({
         roomId: -1,
       });
 
@@ -392,7 +392,7 @@ describe('PUT /booking', () => {
 
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
 
-      const response = await server.post(`/booking`).set('Authorization', `Bearer ${token}`).send({
+      const response = await server.put(`/booking/1`).set('Authorization', `Bearer ${token}`).send({
         roomId: hotel.Rooms[0].id,
       });
 
