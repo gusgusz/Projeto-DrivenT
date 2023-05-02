@@ -114,6 +114,7 @@ describe('GET /booking', () => {
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createTicketType(false, true);
       const hotel = await createHotelWithRooms();
+      const room = hotel.Rooms[0];
 
       const booking = await createBooking(hotel.Rooms[0].id, user.id);
 
@@ -124,10 +125,14 @@ describe('GET /booking', () => {
       expect(response.status).toEqual(httpStatus.OK);
       expect(response.body).toEqual({
         id: booking.id,
-        userId: booking.userId,
-        roomId: booking.roomId,
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
+        Room: {
+          id: room.id,
+          name: room.name,
+          capacity: room.capacity,
+          hotelId: room.createdAt,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        },
       });
     });
   });
