@@ -129,7 +129,7 @@ describe('GET /booking', () => {
           id: room.id,
           name: room.name,
           capacity: room.capacity,
-          hotelId: room.createdAt,
+          hotelId: room.hotelId,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
