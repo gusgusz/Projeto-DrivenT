@@ -34,9 +34,7 @@ export async function postBooking(req: AuthenticatedRequest, res: Response) {
     if (error.name === 'Forbidden') {
       return res.sendStatus(httpStatus.FORBIDDEN);
     }
-    if (error.name === 'UnauthorizedError') {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
-    }
+
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
@@ -57,9 +55,7 @@ export async function updateBooking(req: AuthenticatedRequest, res: Response) {
     if (error.name === 'Forbidden') {
       return res.sendStatus(httpStatus.FORBIDDEN);
     }
-    if (error.name === 'UnauthorizedError') {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
-    }
+
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
