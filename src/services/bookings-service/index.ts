@@ -14,7 +14,7 @@ async function getBooking(userId: number) {
 
   const booking = await bookingsRepository.findBookingByUserId(userId);
 
-  return booking;
+  return { id: booking.id, Room: booking.Room };
 }
 
 async function postBooking(userId: number, roomId: number) {
